@@ -5,15 +5,11 @@
 
   home.packages = with pkgs; [ neovim tmux starship ];
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-  };
+  programs.zsh.enable = true;
+  programs.zsh.enableCompletion = true;
 
-  programs.starship = {
-    enable = true;
-    enableZshIntegration = true;
-  };
+  programs.starship.enable = true;
+  programs.starship.enableZshIntegration = true;
 
   home.file.".zshrc".source = dotfiles + "/zshrc";
   home.file.".tmux.conf".source = dotfiles + "/tmux/.tmux.conf";
@@ -21,14 +17,10 @@
   home.file.".config/nvim/lua".source = dotfiles + "/nvim/lua";
   home.file.".config/starship.toml".source = dotfiles + "/starship/starship.toml";
 
-  programs.git = {
-    enable = true;
-    userName = "LuisAaronGoicochea";
-    userEmail = "luis.aaron18@gmail.com";
-    extraConfig = {
-      color.ui = "auto";
-      init.defaultBranch = "main";
-    };
-  };
+  programs.git.enable = true;
+  programs.git.userName = "LuisAaronGoicochea";
+  programs.git.userEmail = "luis.aaron18@gmail.com";
+  programs.git.extraConfig.color.ui = "auto";
+  programs.git.extraConfig.init.defaultBranch = "main";
 }
 

@@ -16,15 +16,24 @@
         inherit system;
 
         specialArgs = {
-          # Pasamos dotfiles como specialArgs para que home.nix lo vea
           dotfiles = ./dotfiles;
         };
-
         modules = [
           nixos-wsl.nixosModules.default
+
+          # Esta es la parte clave: el módulo NixOS de Home Manager
           home-manager.nixosModules.home-manager
+
+          # Tu configuración del sistema
           ./configuration.nix
-          ./home.nix
+
+          # Tu configuración Home Manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+
+            home-manager.users.nixos = import ./home-manager.nix;
+          }
         ];
       };
     };
