@@ -20,18 +20,14 @@
         };
         modules = [
           nixos-wsl.nixosModules.default
-
-          # Esta es la parte clave: el módulo NixOS de Home Manager
           home-manager.nixosModules.home-manager
-
-          # Tu configuración del sistema
           ./configuration.nix
-
-          # Tu configuración Home Manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-
+	    home-manager.extraSpecialArgs = {
+              dotfiles = ./dotfiles;
+            };
             home-manager.users.nixos = import ./home-manager.nix;
           }
         ];

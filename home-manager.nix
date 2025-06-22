@@ -2,14 +2,9 @@
 
 {
   home.stateVersion = "24.05";
-
   home.packages = with pkgs; [ neovim tmux starship ];
-
   programs.zsh.enable = true;
-  programs.zsh.enableCompletion = true;
-
   programs.starship.enable = true;
-  programs.starship.enableZshIntegration = true;
 
   home.file.".zshrc".source = dotfiles + "/zshrc";
   home.file.".tmux.conf".source = dotfiles + "/tmux/.tmux.conf";
