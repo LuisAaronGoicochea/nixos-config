@@ -14,11 +14,19 @@
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
+
+        specialArgs = {
+          # Pasamos dotfiles como specialArgs para que home.nix lo vea
+          dotfiles = ./dotfiles;
+        };
+
         modules = [
           nixos-wsl.nixosModules.default
           home-manager.nixosModules.home-manager
           ./configuration.nix
+          ./home.nix
         ];
       };
     };
 }
+

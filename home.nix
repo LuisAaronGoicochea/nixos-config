@@ -1,8 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, dotfiles, ... }:
 
-let
-  df = ./dotfiles;
-in {
+{
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [ neovim tmux starship ];
@@ -17,13 +15,11 @@ in {
     enableZshIntegration = true;
   };
 
-  # Integración con los dotfiles clonados
-  home.file.".zshrc".source = df + "/zshrc/.zshrc";
-  home.file.".tmux.conf".source = df + "/tmux/.tmux.conf";
-  home.file.".config/nvim/init.lua".source = df + "/nvim/init.lua";
-  home.file.".config/nvim/lua".source = df + "/nvim/lua";
-  home.file.".config/starship.toml".source = df + "/starship/starship.toml";
-  home.file.".ssh/config".source = df + "/ssh/config";
+  home.file.".zshrc".source = dotfiles + "/zshrc";
+  home.file.".tmux.conf".source = dotfiles + "/tmux/.tmux.conf";
+  home.file.".config/nvim/init.lua".source = dotfiles + "/nvim/init.lua";
+  home.file.".config/nvim/lua".source = dotfiles + "/nvim/lua";
+  home.file.".config/starship.toml".source = dotfiles + "/starship/starship.toml";
 
   programs.git = {
     enable = true;
@@ -35,3 +31,4 @@ in {
     };
   };
 }
+
