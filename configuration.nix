@@ -45,5 +45,5 @@
   home-manager.useUserPackages = true;
   
   # Home Manager config will live in home.nix
-  home-manager.users.nixos = import ./home.nix;  
+  home-manager.users.nixos = import ./home-manager.nix;
 }
