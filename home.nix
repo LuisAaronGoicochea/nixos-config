@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  df = toString ./dotfiles;
+  df = ./dotfiles;
 in {
   home.stateVersion = "24.05";
 
