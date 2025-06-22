@@ -5,16 +5,9 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-#{ config, lib, pkgs, ... }:
 { config, pkgs, ... }:
 
 {
-#  imports = [
-#    # include NixOS-WSL modules
-#    <nixos-wsl/modules>
-#    <home-manager/nixos>
-#  ];
-
   wsl.enable = true;
   wsl.defaultUser = "nixos";
 
@@ -33,6 +26,13 @@
     curl
     wget
     zsh
+    python3
+    sqlite
+    nodejs
+    tmux
+    fzf
+    bat
+    ripgrep
   ];
   
   programs.zsh.enable = true;

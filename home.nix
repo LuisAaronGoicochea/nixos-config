@@ -8,6 +8,8 @@
     tmux
     fzf
     starship
+    dbeaver-bin
+    pgcli
   ];
 
   programs.zsh = {
@@ -20,6 +22,7 @@
     #};
     shellAliases = {
       ll = "ls -lah";
+      gs = "git status";
       update-system = "sudo nixos-rebuild switch --flake /etc/nixos#nixos";
     };
   };
@@ -46,5 +49,9 @@
     enable = true;
     userName = "LuisAaronGoicochea";
     userEmail = "luis.aaron18@gmail.com";
+    extraConfig = {
+      color.ui = "auto";
+      init.defaultBranch = "main";
+    };
   };
 }
