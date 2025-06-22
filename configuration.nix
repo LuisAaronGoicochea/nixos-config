@@ -32,9 +32,13 @@
     htop
     curl
     wget
-    home-manager
+    zsh
   ];
-
+  
+  programs.zsh.enable = true;
+  
+  users.defaultUserShell = pkgs.zsh;
+ 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   home-manager.useGlobalPkgs = true;

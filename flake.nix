@@ -14,7 +14,6 @@
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
-#	specialArgs = { inherit inputs; };
         modules = [
           nixos-wsl.nixosModules.default
           home-manager.nixosModules.home-manager
