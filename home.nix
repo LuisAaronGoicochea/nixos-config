@@ -1,30 +1,15 @@
 { config, pkgs, ... }:
 
-{
+let
+  df = toString ./dotfiles;
+in {
   home.stateVersion = "24.05";
-  
-  home.packages = with pkgs; [
-    neovim
-    tmux
-    fzf
-    starship
-    dbeaver-bin
-    pgcli
-  ];
+
+  home.packages = with pkgs; [ neovim tmux starship ];
 
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    #ohMyZsh = {
-    #  enable = true;
-    #  theme = "robbyrussell";
-    #  plugins = [ "git" ];
-    #};
-    shellAliases = {
-      ll = "ls -lah";
-      gs = "git status";
-      update-system = "sudo nixos-rebuild switch --flake /etc/nixos#nixos";
-    };
   };
 
   programs.starship = {
@@ -32,18 +17,13 @@
     enableZshIntegration = true;
   };
 
-  home.file.".config/starship.toml".text = ''
-    [character]
-    success_symbol = "[➜ ](bold green)"
-    error_symbol = "[➜ ](bold red)"
-    [username]
-    style_user = "bold blue"
-    show_always = true
-    [hostname]
-    style = "bold yellow"
-    ssh_only = false
-  '';
-
+  # Integración con los dotfiles clonados
+  home.file.".zshrc".source = df + "/zshrc/.zshrc";
+  home.file.".tmux.conf".source = df + "/tmux/.tmux.conf";
+  home.file.".config/nvim/init.lua".source = df + "/nvim/init.lua";
+  home.file.".config/nvim/lua".source = df + "/nvim/lua";
+  home.file.".config/starship.toml".source = df + "/starship/starship.toml";
+  home.file.".ssh/config".source = df + "/ssh/config";
 
   programs.git = {
     enable = true;
