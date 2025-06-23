@@ -22,7 +22,7 @@
 
     # ✅ Nushell
     ".config/nushell/config.nu".source                  = config.lib.file.mkOutOfStoreSymlink "${dotfilesAbsPath}/nushell/config.nu";
-    ".config/nushell/env.nu".source                     = config.lib.file.mkOutOfStoreSymlink "${dotfilesAbsPath}/nushell/env.nu");
+    ".config/nushell/env.nu".source                     = config.lib.file.mkOutOfStoreSymlink "${dotfilesAbsPath}/nushell/env.nu";
 
     # ✅ Starship
     ".config/starship/starship.toml".source             = config.lib.file.mkOutOfStoreSymlink "${dotfilesAbsPath}/starship/starship.toml";
