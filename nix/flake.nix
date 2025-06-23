@@ -11,7 +11,7 @@
   outputs = { self, nixpkgs, nixos-wsl, home-manager, ... }:
     let
       system = "x86_64-linux";
-      dotfiles = ./dotfiles;
+      dotfiles = ../dotfiles;
       enableDotfilesInHomeManager = false;
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
