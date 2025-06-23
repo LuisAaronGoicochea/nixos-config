@@ -26,9 +26,16 @@
     stow
     gcc
     tree
+    vscode
   ];
   
   programs.zsh.enable = true;
+  
+  programs.nix-ld = {
+    enable = true;
+    package = pkgs.nix-ld-rs;
+  };
+
   
   users.defaultUserShell = pkgs.zsh;
  
