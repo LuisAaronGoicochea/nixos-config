@@ -11,12 +11,13 @@
   outputs = { self, nixpkgs, nixos-wsl, home-manager, ... }:
     let
       system = "x86_64-linux";
+      dotfiles = ./dotfiles; # <- ahora es relativo al flake
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
 
         specialArgs = {
-          dotfiles = ./dotfiles;
+          dotfiles = dotfiles;
         };
         modules = [
           nixos-wsl.nixosModules.default
@@ -25,8 +26,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-	    home-manager.extraSpecialArgs = {
-              dotfiles = ./dotfiles;
+            home-manager.extraSpecialArgs = {
+              dotfiles = dotfiles;
             };
             home-manager.users.nixos = import ./home-manager.nix;
           }

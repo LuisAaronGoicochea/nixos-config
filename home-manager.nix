@@ -5,12 +5,8 @@
   home.packages = with pkgs; [ neovim tmux starship ];
   programs.zsh.enable = true;
   programs.starship.enable = true;
-
-  home.file.".zshrc".source = dotfiles + "/zshrc";
-  home.file.".tmux.conf".source = dotfiles + "/tmux/.tmux.conf";
-  home.file.".config/nvim/init.lua".source = dotfiles + "/nvim/init.lua";
-  home.file.".config/nvim/lua".source = dotfiles + "/nvim/lua";
-  home.file.".config/starship.toml".source = dotfiles + "/starship/starship.toml";
+  
+  home.file.".tmux.conf".source = dotfiles + "/tmux/tmux.conf";
 
   programs.git.enable = true;
   programs.git.userName = "LuisAaronGoicochea";

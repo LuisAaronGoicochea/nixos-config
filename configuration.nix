@@ -33,6 +33,9 @@
     fzf
     bat
     ripgrep
+    stow
+    gcc
+    tree
   ];
   
   programs.zsh.enable = true;
