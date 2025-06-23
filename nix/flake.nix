@@ -11,7 +11,7 @@
   outputs = { self, nixpkgs, nixos-wsl, home-manager, ... }:
     let
       system = "x86_64-linux";
-      dotfiles = "/etc/nixos/dotfiles";
+      dotfilesAbsPath = "/etc/nixos/dotfiles";
       enableDotfilesInHomeManager = false;
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
@@ -24,7 +24,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { dotfiles = dotfiles; enableDotfiles = enableDotfilesInHomeManager; };
+            home-manager.extraSpecialArgs = { dotfilesAbsPath = dotfilesAbsPath; enableDotfiles = enableDotfilesInHomeManager; };
             home-manager.users.nixos = import ./home-manager.nix;
           }
         ];
