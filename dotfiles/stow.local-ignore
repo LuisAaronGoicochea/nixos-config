@@ -1,0 +1,7 @@
+# stow.local-ignore
+flake.nix
+configuration.nix
+home-manager.nix
+stow.local-ignore
+README.md
+
