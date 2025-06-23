@@ -1,4 +1,4 @@
-{ config, pkgs, dotfiles, enableDotfiles ? true, ... }:
+{ config, pkgs, lib, dotfiles, enableDotfiles ? true, ... }:
 
 {
   home.stateVersion = "24.05";
