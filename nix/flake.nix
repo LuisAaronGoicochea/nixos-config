@@ -16,7 +16,6 @@
     in {
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { dotfiles = dotfiles; };
         modules = [
           nixos-wsl.nixosModules.default
           home-manager.nixosModules.home-manager
