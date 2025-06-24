@@ -9,22 +9,37 @@
   programs.starship.enable = true;
   
   # ✅ Git setup
-  programs.git.enable = true;
-  programs.git.userName = "LuisAaronGoicochea";
-  programs.git.userEmail = "luis.aaron18@gmail.com";
-  programs.git.extraConfig.color.ui = "auto";
-  programs.git.extraConfig.init.defaultBranch = "main";
+  programs.git = {
+    enable = true;
+    userName = "LuisAaronGoicochea";
+    userEmail = "luis.aaron18@gmail.com";
+    
+    extraConfig = {
+      color.ui = "auto";
+      init.defaultBranch = "main";
+      pull.rebase = true;
+      push.autoSetupRemote = true;
+      core = {
+        editor = "nvim";
+        whitespace = "trailing-space,space-before-tab";
+      };
+      diff.colorMoved = "default";
+      merge.conflictStyle = "diff3";
+    };
+
+    delta = {
+      enable = true;
+      options = {
+        navigate = true;
+        line-numbers = true;
+        syntax-theme = "GitHub";
+      };
+    };
+  };
 
   home.activation.stowDotfiles = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    echo "👉 Running stow to symlink dotfiles into $HOME..."
-
-    # Te aseguras que stow esté en PATH
     ${pkgs.stow}/bin/stow --version
-
-    # Elimina symlinks antiguos que pueden estar en conflicto
     ${pkgs.stow}/bin/stow --dir=${dotfiles} --target=$HOME --delete --verbose *
-
-    # Restaura nuevos symlinks automáticamente
     ${pkgs.stow}/bin/stow --dir=${dotfiles} --target=$HOME --restow --verbose *
   '';
 

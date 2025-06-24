@@ -4,29 +4,51 @@
 { config, pkgs, ... }:
 
 {
+  nixpkgs.config.allowUnfree = true;
+
   wsl.enable = true;
   wsl.defaultUser = "nixos";
 
   system.stateVersion = "24.11";
 
   environment.systemPackages = with pkgs; [
+    # Development
     git
     vim
+    neovim
+    vscode
+    gcc
+    gnumake
+    python3
+    nodejs
+    sqlite
+    
+    # System utilities
     htop
+    btop
     curl
     wget
-    zsh
-    python3
-    sqlite
-    nodejs
-    tmux
+    tree
+    fd
     fzf
     bat
     ripgrep
+    jq
+    yq
+    
+    # Shell
+    zsh
+    tmux
+    starship
     stow
-    gcc
-    tree
-    vscode
+    
+    # Additional tools
+    eza # Modern replacement for ls
+    delta # Better git diff
+    lazygit # Terminal UI for git
+    bottom # System monitor
+    du-dust # Better du
+    procs # Modern replacement for ps
   ];
   
   programs.zsh.enable = true;
@@ -45,6 +67,5 @@
   home-manager.useUserPackages = true;
   home-manager.backupFileExtension = "off";
 
-  # Home Manager config will live in home.nix
-  home-manager.users.nixos = import ./home-manager.nix;
+  # Home Manager config is handled in flake.nix
 }

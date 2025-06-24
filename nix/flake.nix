@@ -1,37 +1,69 @@
 {
-  description = "NixOS-WSL + Home Manager with Flakes and Stow";
+  description = "Universal Dotfiles with NixOS/Home-Manager and Stow support";
 
   inputs = {
+    # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    
+    # Home manager
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
+    # Additional inputs
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    flake-utils.url = "github:numtide/flake-utils";
+    
+    # Optional: Darwin support
+    darwin = {
+      url = "github:lnl7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixos-wsl, home-manager, ... }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, flake-utils, nixos-wsl, darwin, ... }:
     let
       system = "x86_64-linux";
-      dotfiles = "/etc/nixos/dotfiles"; # <- donde tienes tus dotfiles
-      enableDotfilesInHomeManager = true;
-    in {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      username = "nixos";
+      hostname = "nixos";
+      stateVersion = "24.05";
+    in
+    {
+      nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
         inherit system;
-
-        specialArgs = { dotfiles = dotfiles; };
+        
+        specialArgs = { 
+          inherit username hostname stateVersion;
+        };
+        
         modules = [
+          (./. + "/modules/core.nix")
+          (./. + "/modules/users.nix")
           nixos-wsl.nixosModules.default
-          home-manager.nixosModules.home-manager
-
           ./configuration.nix
+          home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              dotfiles = dotfiles;
-              enableDotfiles = enableDotfilesInHomeManager;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit username;
+              };
+              users.${username} = import (./. + "/modules/home.nix");
             };
-            home-manager.users.nixos = import ./home-manager.nix;
           }
+        ];
+      };
+
+      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+        extraSpecialArgs = {
+          inherit username;
+        };
+        modules = [
+          (./. + "/modules/home.nix")
         ];
       };
     };
