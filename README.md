@@ -97,121 +97,229 @@ El sistema es completamente modular. Puedes:
 ### Method 2: Traditional Linux (Using GNU Stow)
 
 #### Prerequisites
-- GNU Stow
-  ```bash
-  # Debian/Ubuntu
-  sudo apt install stow
-  
-  # Fedora
-  sudo dnf install stow
-  
-  # Arch Linux
-  sudo pacman -S stow
-  ```
 
-#### Steps
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/LuisAaronGoicochea/nixos-config
-   cd nixos-config/dotfiles
-   ```
+1. Install GNU Stow and other dependencies:
+
+##### Ubuntu/Debian
+```bash
+sudo apt update
+sudo apt install stow git zsh tmux neovim fzf ripgrep bat fd-find
+# Install starship
+curl -sS https://starship.rs/install.sh | sh
+```
+
+##### Fedora
+```bash
+sudo dnf install stow git zsh tmux neovim fzf ripgrep bat fd-find
+# Install starship
+curl -sS https://starship.rs/install.sh | sh
+```
+
+##### Arch Linux
+```bash
+sudo pacman -S stow git zsh tmux neovim fzf ripgrep bat fd
+# Install starship
+curl -sS https://starship.rs/install.sh | sh
+```
+
+#### Installation Steps
+
+1. Clone the repository:
+```bash
+git clone https://github.com/LuisAaronGoicochea/nixos-config ~/.dotfiles
+cd ~/.dotfiles
+```
 
 2. Run the setup script:
-   ```bash
-   ./setup.sh
-   ```
-
-## Directory Structure
-
-```
-.
-├── nix/                    # NixOS specific configurations
-│   ├── configuration.nix   # System configuration
-│   ├── flake.nix          # Flake configuration
-│   └── home-manager.nix   # User configuration
-│
-└── dotfiles/              # Universal dotfiles (Stow-compatible)
-    ├── aerospace/         # Aerospace configuration
-    ├── atuin/            # Atuin shell history
-    ├── ghostty/          # Ghostty terminal
-    ├── hammerspoon/      # macOS automation
-    ├── karabiner/        # Keyboard customization
-    ├── nushell/          # Nushell configuration
-    ├── nvim/             # Neovim configuration
-    ├── sketchybar/       # macOS menubar
-    ├── skhd/             # Simple hotkey daemon
-    ├── ssh/              # SSH configuration
-    ├── starship/         # Shell prompt
-    ├── tmux/             # Terminal multiplexer
-    ├── wezterm/          # Terminal emulator
-    ├── zellij/           # Terminal workspace
-    └── zshrc/            # Zsh configuration
+```bash
+./setup.sh
 ```
 
-## Customization
+The script will:
+- Backup your existing configurations
+- Install all dotfiles using stow
+- Show you where your backups are stored
 
-### For NixOS Users
-- Edit files in the `nix/` directory
-- Main configuration files:
-  - `configuration.nix`: System-wide settings
-  - `home-manager.nix`: User-specific configuration
-  - `flake.nix`: Dependencies and system configuration
+#### Post-Installation
 
-### For Traditional Linux Users
-- Configuration files are organized by application in the `dotfiles/` directory
-- Edit files directly in their respective directories
-- Run `./setup.sh` to apply changes
+1. Change your default shell to zsh:
+```bash
+chsh -s $(which zsh)
+```
 
-## Backup
-- NixOS configurations are backed up to `~/.config/nixos.backup.<date>`
-- Traditional dotfiles are backed up to `~/.config.backup.<date>`
+2. Start a new terminal session to see the changes
 
-## Pruebas y Verificación
+#### Customization
 
-Para asegurarte de que todo funcione correctamente, puedes usar los scripts de prueba incluidos:
+You can customize the installation by:
 
-1. Verificar requisitos del sistema:
+1. **Selective Installation**: Edit the `STOW_DIRS` array in `setup.sh`
+2. **Configuration Changes**: Edit files in their respective directories
+3. **Adding New Tools**: Create new directories and add to `STOW_DIRS`
+```````
+This is the description of what the code block changes:
+<changeDescription>
+Fixing typos and improving clarity in the documentation
+</changeDescription>
+
+This is the code block that represents the suggested code change:
+````markdown
+# 🚀 Universal Dotfiles
+
+Este repositorio contiene una configuración universal de dotfiles que soporta tanto NixOS (con Home Manager) como distribuciones Linux tradicionales (usando GNU Stow).
+
+## 📦 Características
+
+- 🔄 **Soporte Dual**: Funciona tanto en NixOS como en otras distribuciones Linux
+- 🏠 **Integración con Home Manager**: Configuración completa para NixOS
+- 🔗 **GNU Stow**: Gestión de enlaces simbólicos para sistemas no-NixOS
+- 🛠️ **Estructura Modular**: Fácil de personalizar y mantener
+- 📚 **Bien Documentado**: Instrucciones claras para ambos modos de uso
+
+## Features
+
+- 🔧 **Dual-Mode Support**: Works with both NixOS and traditional Linux distributions
+- 📦 **Home Manager Integration**: Full NixOS + Home Manager configuration
+- 🔄 **GNU Stow Integration**: Easy symlink management for non-NixOS systems
+- ⚡ **Modern Tools**: Configuration for modern development tools
+
+## Installation
+
+### Method 1: NixOS with Home Manager
+
+#### Prerequisites
+- NixOS installed
+- Flakes enabled
+- Home Manager installed
+
+#### Steps
+
+1. Clone este repositorio donde prefieras (por ejemplo, en tu carpeta de configuración):
    ```bash
-   ./scripts/check-system.sh
+   # Opción 1: En /etc/nixos (tradicional)
+   sudo git clone https://github.com/LuisAaronGoicochea/nixos-config /etc/nixos
+
+   # Opción 2: En tu directorio home
+   git clone https://github.com/LuisAaronGoicochea/nixos-config ~/.config/nixos
    ```
 
-2. Probar la configuración:
+2. Crea tu configuración personalizada:
    ```bash
-   ./scripts/test-config.sh
+   # Copia el ejemplo de configuración
+   cp examples/configuration.nix ~/.config/nixos/config.nix
+   
+   # Edita la configuración según tus necesidades
+   $EDITOR ~/.config/nixos/config.nix
    ```
 
-Los scripts verificarán:
-- Sintaxis y build de configuración NixOS (si aplica)
-- Configuración de Stow
-- Configuraciones de shell (zsh, tmux)
-- Configuración de Neovim
-- Y más...
-
-### Solución de Problemas Comunes
-
-#### Para usuarios de NixOS:
-1. Si hay errores en el build:
+3. Aplica la configuración:
    ```bash
-   sudo nixos-rebuild build --show-trace
+   # Si instalaste en /etc/nixos
+   sudo nixos-rebuild switch --flake .#nixos
+
+   # Si instalaste en ~/.config/nixos
+   sudo nixos-rebuild switch --flake ~/.config/nixos#nixos
    ```
 
-2. Para actualizar todos los paquetes:
+#### Configuración Personalizada
+
+El sistema es completamente modular. Puedes:
+
+1. **Especificar tu ubicación preferida**:
+   ```nix
+   {
+     configDir = "~/.config/nixos";  # O donde prefieras
+   }
+   ```
+
+2. **Personalizar usuario y hostname**:
+   ```nix
+   {
+     username = "tuusuario";
+     hostname = "tumaquina";
+   }
+   ```
+
+3. **Agregar módulos personalizados**:
+   ```nix
+   {
+     extraModules = [
+       ./modules/gaming.nix
+       ./modules/development.nix
+     ];
+   }
+   ``````
+
+2. Copy NixOS configuration:
    ```bash
-   nix flake update
+   sudo cp -r nix/* /etc/nixos/
+   ```
+
+3. Rebuild NixOS:
+   ```bash
    sudo nixos-rebuild switch
    ```
 
-#### Para usuarios de otras distribuciones:
-1. Si hay conflictos con Stow:
-   ```bash
-   stow -D dotfiles  # Desenlazar primero
-   stow dotfiles     # Volver a enlazar
-   ```
+### Method 2: Traditional Linux (Using GNU Stow)
 
-2. Para ver qué archivos se enlazarán:
-   ```bash
-   stow -nv dotfiles  # Simulación verbose
-   ```
+#### Prerequisites
 
-## Contributing
-Feel free to fork this repository and customize it to your needs. Pull requests are welcome!
+1. Install GNU Stow and other dependencies:
+
+##### Ubuntu/Debian
+```bash
+sudo apt update
+sudo apt install stow git zsh tmux neovim fzf ripgrep bat fd-find
+# Install starship
+curl -sS https://starship.rs/install.sh | sh
+```
+
+##### Fedora
+```bash
+sudo dnf install stow git zsh tmux neovim fzf ripgrep bat fd-find
+# Install starship
+curl -sS https://starship.rs/install.sh | sh
+```
+
+##### Arch Linux
+```bash
+sudo pacman -S stow git zsh tmux neovim fzf ripgrep bat fd
+# Install starship
+curl -sS https://starship.rs/install.sh | sh
+```
+
+#### Installation Steps
+
+1. Clone the repository:
+```bash
+git clone https://github.com/LuisAaronGoicochea/nixos-config ~/.dotfiles
+cd ~/.dotfiles
+```
+
+2. Run the setup script:
+```bash
+./setup.sh
+```
+
+The script will:
+- Backup your existing configurations
+- Install all dotfiles using stow
+- Show you where your backups are stored
+
+#### Post-Installation
+
+1. Change your default shell to zsh:
+```bash
+chsh -s $(which zsh)
+```
+
+2. Start a new terminal session to see the changes
+
+#### Customization
+
+You can customize the installation by:
+
+1. **Selective Installation**: Edit the `STOW_DIRS` array in `setup.sh`
+2. **Configuration Changes**: Edit files in their respective directories
+3. **Adding New Tools**: Create new directories and add to `STOW_DIRS`
+```````
